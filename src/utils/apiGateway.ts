@@ -1,35 +1,33 @@
-import IAPP_TOKEN_STORAGE_KEY from '../models/token';
-import axios, {AxiosResponse} from 'axios';
+import ITOKEN from '../models/token';
+import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import tokenProvider from 'axios-token-interceptor';
+import AppConfig from './appConfig';
 
 class ApiGateway {
-    readonly TOKEN_STORAGE_KEY: string = process.env.REACT_APP_TOKEN_STORAGE_KEY as string;
-    readonly BASE_URL: string|undefined = process.env.REACT_APP_BASE_URL;
-    readonly axiosClient = axios.create({
-        baseURL: this.BASE_URL
+    readonly axiosClient: AxiosInstance = axios.create({
+        baseURL: AppConfig.BASE_URL
     });
-    private token:string;
+    private token:ITOKEN;
 
     constructor() {
-        this.token = "";
+        this.token = { userToken: "" };
 
-        if(this.TOKEN_STORAGE_KEY != null) {
-            const tokenStore = localStorage.getItem(this.TOKEN_STORAGE_KEY) as string;
+        if(AppConfig.TOKEN_STORAGE_KEY != null) {
+            const tokenStore = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY) as string;
 
             if (tokenStore != null) {
-                const {token} = JSON.parse(tokenStore);
-                this.token = token;
+                this.token = JSON.parse(tokenStore) as ITOKEN;
             }
         }
 
         this.axiosClient.interceptors.request.use(tokenProvider({
-            token: this.token
+            token: this.token.userToken
         }));
 
         this.axiosClient.interceptors.response.use(
             (promise)=> {
                 const {token} = promise.headers;
-                localStorage.setItem(this.TOKEN_STORAGE_KEY, token);
+                localStorage.setItem(AppConfig.TOKEN_STORAGE_KEY, token);
 
                 return promise;
             }
@@ -38,9 +36,10 @@ class ApiGateway {
 
     public async makeRequest<R, D>(path: string, method:'GET'|'POST', requestData: D): Promise<R>{
         const {data} = await this.axiosClient({
+            baseURL: AppConfig.MICROSERVICES[path].url,
             url: path,
             method: method,
-            data: requestData,
+            data: requestData
         }) as AxiosResponse<R>;
 
         return data;
