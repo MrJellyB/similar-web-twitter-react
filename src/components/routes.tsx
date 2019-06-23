@@ -1,11 +1,11 @@
 import React from "react";
-import User from "../models/user";
+import IUser from "../models/IUser";
 import {Route, Switch} from 'react-router-dom';
 import Home from "./Pages/Home";
 import Register from "./Pages/Register";
 
 interface Props {
-    currentUser: User
+    currentUser: IUser
 }
 
 interface State {

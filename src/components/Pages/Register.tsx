@@ -1,11 +1,11 @@
 import React from "react";
-import IUser from "../../models/user";
+import ISignInData from "../../models/signInData";
 
 interface IProps {
 }
 
 interface IState {
-    user: IUser;
+    user: ISignInData;
 }
 
 export default class Register extends React.Component<IProps, IState> {
@@ -18,8 +18,9 @@ export default class Register extends React.Component<IProps, IState> {
                 email: "",
                 firstName: "",
                 lastName: "",
-                nickName: ""
-            }
+                nickName: "",
+                password: ""
+            } as ISignInData
         };
     }
 
@@ -28,7 +29,7 @@ export default class Register extends React.Component<IProps, IState> {
         const userFromInput = {
             ...this.state.user,
             [target.name]: target.value
-        } as IUser;
+        } as ISignInData;
 
         this.setState({
             user: userFromInput
@@ -45,16 +46,11 @@ export default class Register extends React.Component<IProps, IState> {
             console.log("user data is not valid");
     };
 
-    validateSubmit = (userToValidate: IUser) : boolean => {
-        return (
-            userToValidate.email != null &&
-            userToValidate.nickName != null &&
-            userToValidate.lastName != null &&
-            userToValidate.firstName != null
-        )
+    validateSubmit = (userToValidate: ISignInData) : boolean => {
+        return  Object.values(userToValidate).every(key => key !== "");
     };
 
-    submitUser = async (userToSubmit: IUser) : Promise<void> => {
+    submitUser = async (userToSubmit: ISignInData) : Promise<void> => {
         console.log("now we need to do submit with token");
 
 
@@ -62,34 +58,39 @@ export default class Register extends React.Component<IProps, IState> {
 
     render () {
         return (
-            <>
+            <div className={""}>
                 <h1>Register</h1>
 
                 <form onSubmit={this.handleSubmit}>
                     <input
                         name="email"
                         type="email"
-                        placeholder="User Email"
+                        placeholder="Enter User Email..."
                         onChange={this.handleInputChange} />
                     <input
                         name="firstName"
                         type="text"
-                        placeholder="First Name"
+                        placeholder="Enter First Name..."
                         onChange={this.handleInputChange} />
                     <input
                         name="lastName"
                         type="text"
-                        placeholder="Last Name"
+                        placeholder="Enter Last Name..."
                         onChange={this.handleInputChange} />
                     <input
-                        name="nickname"
+                        name="nickName"
                         type="text"
-                        placeholder="User Nickname"
+                        placeholder="Enter User Nickname..."
+                        onChange={this.handleInputChange} />
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Enter Password..."
                         onChange={this.handleInputChange} />
 
                     <input type="submit" value="submit"/>
                 </form>
-            </>
+            </div>
         )
     }
 }
