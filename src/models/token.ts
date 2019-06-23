@@ -1,3 +1,3 @@
-export default interface APP_TOKEN_STORAGE_KEY {
+export default interface IAPP_TOKEN_STORAGE_KEY {
     userToken: string;
 }
