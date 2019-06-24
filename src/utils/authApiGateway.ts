@@ -6,7 +6,7 @@ import IUser from "../models/IUser";
 class AuthApiGateway {
 
     public async register(user: ISignInData): Promise<void> {
-        await ApiGateway.makeRequest<void, ISignInData>('auth', 'auth/register', "POST", user);
+        await ApiGateway.makeRequest('auth', 'auth/register', "POST", user);
     }
 
     public async logIn(email: string, password: string): Promise<IUserToken> {
@@ -17,8 +17,14 @@ class AuthApiGateway {
 
     }
 
-    public async getCurrentUserInfo(): Promise<IUser>{
-        return await ApiGateway.makeRequest<IUser, void>('auth', 'auth/getUserInfo', "GET");
+    public async getCurrentUserInfo(userId: string): Promise<IUser>{
+        return await ApiGateway
+            .makeRequest<IUser, null, {}>(
+                'auth',
+                'info/user',
+                "GET",
+                null,
+                {userId: userId});
     }
 }
 

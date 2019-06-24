@@ -25,8 +25,9 @@ class ApiGateway {
             token: this.token.userToken,
             getToken: () => {
                 console.log(this.token.userToken);
-                return this.token.userToken;
-            }
+                return JSON.stringify(this.token);
+            },
+            header: 'token'
         }));
 
         this.axiosClient.interceptors.response.use(
@@ -49,11 +50,12 @@ class ApiGateway {
         localStorage.removeItem(AppConfig.TOKEN_STORAGE_KEY);
     };
 
-    public async makeRequest<R, D>(service: string, path: string, method:'GET'|'POST', requestData?: D): Promise<R>{
+    public async makeRequest<R, B, P>(service: string, path: string, method:'GET'|'POST', requestData?: B, requestParams?: P): Promise<R>{
         const {data} = await this.axiosClient({
             baseURL: AppConfig.MICROSERVICES[service].url + "/" + path,
             method: method,
-            data: requestData
+            data: requestData,
+            params: requestParams
         }) as AxiosResponse<R>;
 
         return data;

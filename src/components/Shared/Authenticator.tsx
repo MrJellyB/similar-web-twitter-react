@@ -31,7 +31,7 @@ export default class Authenticator extends React.Component<IProps, IState>{
         const userTokenFromStorage = this.getLocalUserToken();
 
         if(currentUser == null && userTokenFromStorage != null)
-            authApiGateway.getCurrentUserInfo()
+            authApiGateway.getCurrentUserInfo(userTokenFromStorage.userId)
                 .then(usersEventStore.currentUserEvent.next);
     }
 
