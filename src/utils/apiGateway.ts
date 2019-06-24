@@ -4,7 +4,7 @@ import tokenProvider from 'axios-token-interceptor';
 import AppConfig from './appConfig';
 
 class ApiGateway {
-    readonly axiosClient: AxiosInstance = axios.create({
+    private readonly axiosClient: AxiosInstance = axios.create({
         baseURL: AppConfig.BASE_URL
     });
     private token:ITOKEN;
@@ -21,23 +21,30 @@ class ApiGateway {
         }
 
         this.axiosClient.interceptors.request.use(tokenProvider({
-            token: this.token.userToken
+            token: this.token.userToken,
+            getToken: () => {
+                console.log(this.token.userToken);
+                return this.token.userToken;
+            }
         }));
 
         this.axiosClient.interceptors.response.use(
-            (promise)=> {
-                const {token} = promise.headers;
-                localStorage.setItem(AppConfig.TOKEN_STORAGE_KEY, token);
+            (response)=> {
+                const {token} = response.headers;
 
-                return promise;
+                if (token != null) {
+                    const tokenToStore = JSON.stringify({userToken: token} as ITOKEN);
+                    localStorage.setItem(AppConfig.TOKEN_STORAGE_KEY, tokenToStore);
+                }
+
+                return response;
             }
         )
     }
 
-    public async makeRequest<R, D>(path: string, method:'GET'|'POST', requestData: D): Promise<R>{
+    public async makeRequest<R, D>(service: string, path: string, method:'GET'|'POST', requestData: D): Promise<R>{
         const {data} = await this.axiosClient({
-            baseURL: AppConfig.MICROSERVICES[path].url,
-            url: path,
+            baseURL: AppConfig.MICROSERVICES[service].url + "/" + path,
             method: method,
             data: requestData
         }) as AxiosResponse<R>;

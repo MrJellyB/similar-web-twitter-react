@@ -1,5 +1,6 @@
 import React from "react";
 import ISignInData from "../../models/signInData";
+import authApiGateway from "../../utils/authApiGateway";
 
 interface IProps {
 }
@@ -53,6 +54,15 @@ export default class Register extends React.Component<IProps, IState> {
     submitUser = async (userToSubmit: ISignInData) : Promise<void> => {
         console.log("now we need to do submit with token");
 
+        authApiGateway.register(userToSubmit)
+            .then(() => {
+                console.log("success");
+                // TODO: use redux or rxjs to notify success to the user
+            })
+            .catch((error) => {
+                console.log("failure" + error);
+                // TODO: use redux or rxjs to notify failure to the user
+            })
 
     };
 

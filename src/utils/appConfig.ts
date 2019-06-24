@@ -9,19 +9,20 @@ class AppConfig {
     public readonly MICROSERVICES: {[path: string]: IMicroserviceConfig} = {}; // TODO: add this to env config file of json
 
     constructor() {
-        if(process.env.REACT_APP_MICTROSERVICES_PROXY == null)
+        const microservicesEnvKeys = Object.keys(process.env).filter(key => key.includes("MICROSERVICES"));
+        if(microservicesEnvKeys === [])
             return;
 
-        const microservicesToUrls =
-            JSON.parse(process.env.REACT_APP_MICTROSERVICES_PROXY) as IMicroserviceConfig[];
-
-        microservicesToUrls.forEach((microservice) => {
-            this.MICROSERVICES[microservice.name] = {
-                name: microservice.name,
-                url: microservice.url
-            };
-
-        });
+        this.MICROSERVICES = {};
+        microservicesEnvKeys.forEach((microserviceKey:string) => {
+            const serviceNameParts = microserviceKey.split('_');
+            const serviceName = serviceNameParts[serviceNameParts.length - 1];
+            this.MICROSERVICES[serviceName.toLowerCase()] =
+                {
+                    url: process.env[microserviceKey] as string,
+                    name: serviceName
+                };
+        })
     }
 }
 
