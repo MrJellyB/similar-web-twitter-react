@@ -1,7 +1,8 @@
 import React from "react";
 import IUser from "../../models/IUser";
-import usersEventStore from "../../events/usersEventStore";
 import {Link} from "react-router-dom";
+import {AuthContext} from "../Shared/Authenticator";
+import ILoggedInUserContext from "../../models/LoggedInUserContext";
 
 interface IState {
     currentUser?: IUser
@@ -12,27 +13,19 @@ interface IProps {
 }
 
 export default class ActionsSideBar extends React.Component<IProps,IState> {
-    constructor(props: IProps){
-        super(props);
-
-        this.state = {};
-    }
-
-    componentDidMount(): void {
-
-        usersEventStore.currentUserEvent.subscribe(this.setCurrentUser);
-    }
-
-    setCurrentUser = (user: IUser|null) => {
-        if(user != null)
-            this.setState({
-                currentUser: user
-            });
-    };
+    context!: React.ContextType<any>;
 
     render() {
-        if(this.state.currentUser != null) {
-            return <div>stam</div>;
+        console.log(this.context);
+        const {loggedInUser} = this.context as ILoggedInUserContext;
+        if(loggedInUser != null) {
+            return <div>
+                <Link to="/post">Post a new Tweet</Link>
+                <Link to="/personal-feed">My Feed</Link>
+                <Link to="/global-feed">Everyone's Feed</Link>
+                <Link to="/user-settings">User Settings</Link>
+                <Link to="/logout">Logout</Link>
+            </div>;
         }
         else {
             return <div>
@@ -42,3 +35,6 @@ export default class ActionsSideBar extends React.Component<IProps,IState> {
         }
     }
 }
+
+
+ActionsSideBar.contextType = AuthContext;
