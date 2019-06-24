@@ -5,7 +5,7 @@ import Home from "./Pages/Home";
 import Register from "./Pages/Register";
 
 interface Props {
-    currentUser: IUser
+    currentUser?: IUser
 }
 
 interface State {

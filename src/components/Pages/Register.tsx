@@ -1,6 +1,9 @@
 import React from "react";
 import ISignInData from "../../models/signInData";
 import authApiGateway from "../../utils/authApiGateway";
+import notificationEventStore from "../../events/notificationEventStore";
+import usersEventStore from "../../events/usersEventStore";
+import {Redirect} from "react-router";
 
 interface IProps {
 }
@@ -57,13 +60,19 @@ export default class Register extends React.Component<IProps, IState> {
         authApiGateway.register(userToSubmit)
             .then(() => {
                 console.log("success");
-                // TODO: use redux or rxjs to notify success to the user
+                notificationEventStore.notifySuccess.next("User Register Successfully");
+                usersEventStore.currentUserEvent.next(userToSubmit);
+                this.renderRedirect();
             })
             .catch((error) => {
                 console.log("failure" + error);
                 // TODO: use redux or rxjs to notify failure to the user
             })
 
+    };
+
+    renderRedirect = () => {
+        return <Redirect to='/' />;
     };
 
     render () {
