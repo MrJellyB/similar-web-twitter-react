@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Register from "./Pages/Register";
 import {AuthContext} from "./Shared/Authenticator";
 import ILoggedInUserContext from "../models/LoggedInUserContext";
+import LogOut from "./Pages/LogOut";
 
 interface Props {
     currentUser?: IUser
@@ -18,7 +19,6 @@ export default class Routes extends React.Component<Props,State> {
 
     render() {
         const {loggedInUser} = this.context as ILoggedInUserContext;
-
         if (loggedInUser == null) {
             return (
                 <Switch>
@@ -32,6 +32,7 @@ export default class Routes extends React.Component<Props,State> {
             return (
                 <Switch>
                     <Route path="/" component={Home}/>
+                    <Route path="/logout" component={LogOut} />
                 </Switch>
             )
         }
