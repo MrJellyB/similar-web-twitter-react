@@ -56,8 +56,6 @@ export default class Register extends React.Component<IProps, IState> {
     };
 
     submitUser = async (userToSubmit: ISignInData) : Promise<void> => {
-        console.log("now we need to do submit with token");
-
         authApiGateway.register(userToSubmit)
             .then((userId:string) => {
                 console.log("success");

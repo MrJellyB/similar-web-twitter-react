@@ -42,7 +42,7 @@ class ApiGateway {
                 if(response.headers[this.TOKEN_HEADER] == null)
                     return response;
 
-                const userToken = JSON.parse(response.headers[this.TOKEN_HEADER]) as string;
+                const userToken = response.headers[this.TOKEN_HEADER] as string;
 
                 if (userToken != null) {
                     const tokenToStore = userToken.substring("Bearer ".length);
