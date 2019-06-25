@@ -1,4 +1,3 @@
-import IUserToken from '../models/token';
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import tokenProvider from 'axios-token-interceptor';
 import AppConfig from './appConfig';
@@ -8,34 +7,45 @@ class ApiGateway {
     private readonly axiosClient: AxiosInstance = axios.create({
         baseURL: AppConfig.BASE_URL
     });
-    private token:IUserToken;
+
+    private readonly TOKEN_HEADER = 'token';
 
     constructor() {
-        this.token = { userToken: "", userId: "" };
-
-        if(AppConfig.TOKEN_STORAGE_KEY != null) {
-            const tokenStore = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY) as string;
-
-            if (tokenStore != null) {
-                this.token = JSON.parse(tokenStore) as IUserToken;
-            }
-        }
 
         this.axiosClient.interceptors.request.use(tokenProvider({
-            token: this.token.userToken,
             getToken: () => {
-                console.log(this.token.userToken);
-                return JSON.stringify(this.token);
+                const tokenStorageValue = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY) as string;
+
+                console.log(tokenStorageValue);
+                return tokenStorageValue || "";
             },
-            header: 'token'
+            header: this.TOKEN_HEADER
         }));
+
+
+        // TODO: Maybe we need userid?
+        // this.axiosClient.interceptors.request.use(
+        //     (request) => {
+        //         const useridStorageValue = localStorage.getItem(AppConfig.USERID_STORAGE_KEY);
+        //
+        //         if (useridStorageValue != null) {
+        //             request.headers['x-userid'] = useridStorageValue;
+        //         }
+        //
+        //         return request;
+        //     }
+        // );
 
         this.axiosClient.interceptors.response.use(
             (response)=> {
-                const userToken = JSON.parse(response.headers['token']) as IUserToken;
+
+                if(response.headers[this.TOKEN_HEADER] == null)
+                    return response;
+
+                const userToken = JSON.parse(response.headers[this.TOKEN_HEADER]) as string;
 
                 if (userToken != null) {
-                    const tokenToStore = JSON.stringify(userToken);
+                    const tokenToStore = userToken.substring("Bearer ".length);
                     localStorage.setItem(AppConfig.TOKEN_STORAGE_KEY, tokenToStore);
                 }
 
@@ -51,8 +61,9 @@ class ApiGateway {
     };
 
     public async makeRequest<R, B, P>(service: string, path: string, method:'GET'|'POST', requestData?: B, requestParams?: P): Promise<R>{
+        console.log(AppConfig.MICROSERVICES_TO_URLS);
         const {data} = await this.axiosClient({
-            baseURL: AppConfig.MICROSERVICES[service].url + "/" + path,
+            baseURL: AppConfig.MICROSERVICES_TO_URLS[service].url + "/" + path,
             method: method,
             data: requestData,
             params: requestParams

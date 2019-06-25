@@ -2,7 +2,6 @@ import React from "react";
 import IUser from "../../models/IUser";
 import usersEventStore from "../../events/usersEventStore";
 import ILoggedInUserContext from "../../models/LoggedInUserContext";
-import IUserToken from "../../models/token";
 import AppConfig from "../../utils/appConfig";
 import authApiGateway from "../../utils/authApiGateway";
 
@@ -28,18 +27,13 @@ export default class Authenticator extends React.Component<IProps, IState>{
         const currentUser = usersEventStore.currentUserEvent.value;
         usersEventStore.currentUserEvent.subscribe(this.handleUserChange);
 
-        const userTokenFromStorage = this.getLocalUserToken();
+        const userTokenFromStorage = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY);
+        const userIdFromStorage = localStorage.getItem(AppConfig.USERID_STORAGE_KEY);
 
-        if(currentUser == null && userTokenFromStorage != null)
-            authApiGateway.getCurrentUserInfo(userTokenFromStorage.userId)
+        if (currentUser == null && (userTokenFromStorage != null && userIdFromStorage != null))
+            authApiGateway.getCurrentUserInfo(userIdFromStorage)
                 .then(usersEventStore.currentUserEvent.next);
     }
-
-    getLocalUserToken = (): IUserToken|null => {
-        const userFromStorage = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY);
-
-        return userFromStorage != null ? JSON.parse(userFromStorage) as IUserToken : null;
-    };
 
     handleUserChange = (user: IUser|null): void => {
         if(user != null)

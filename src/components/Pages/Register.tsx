@@ -4,6 +4,7 @@ import authApiGateway from "../../utils/authApiGateway";
 import notificationEventStore from "../../events/notificationEventStore";
 import usersEventStore from "../../events/usersEventStore";
 import {Redirect} from "react-router";
+import appConfig from "../../utils/appConfig";
 
 interface IProps {
 }
@@ -58,10 +59,11 @@ export default class Register extends React.Component<IProps, IState> {
         console.log("now we need to do submit with token");
 
         authApiGateway.register(userToSubmit)
-            .then(() => {
+            .then((userId:string) => {
                 console.log("success");
-                notificationEventStore.notifySuccess.next("User Register Successfully");
+                notificationEventStore.notifySuccess.next("User Registered Successfully");
                 usersEventStore.currentUserEvent.next(userToSubmit);
+                localStorage.setItem(appConfig.USERID_STORAGE_KEY, userId);
                 this.renderRedirect();
             })
             .catch((error) => {

@@ -1,4 +1,4 @@
-export default interface IUserToken {
+export default interface IUserSessionInfo {
     userToken: string;
     userId: string;
 }
