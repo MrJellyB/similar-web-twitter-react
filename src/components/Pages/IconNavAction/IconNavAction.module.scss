@@ -3,6 +3,9 @@
   text-decoration: none;
 }
 
+.nav:hover {
+  @extend .nav
+}
 .navButton{
   display: list-item;
 }

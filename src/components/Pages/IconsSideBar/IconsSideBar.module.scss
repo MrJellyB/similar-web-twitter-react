@@ -1,11 +1,12 @@
 .navBar {
-  top: 50%;
+  top: 40%;
+  display: flex;
   text-align: left;
   width: auto;
   overflow: hidden;
   position: absolute;
   color: white;
-  transition: max-width 2s;
+  transition: max-width 500ms;
   max-width: 2em;
 }
 
@@ -14,15 +15,5 @@
 
   width: content-box;
   max-width: 15em;
-  transition: max-width 2s;
-}
-
-@keyframes open {
-  from { width: 2em }
-  to { width: 7em }
-}
-
-@keyframes close {
-  from { width: 5em }
-  to { width: 2em }
+  transition: max-width 500ms;
 }

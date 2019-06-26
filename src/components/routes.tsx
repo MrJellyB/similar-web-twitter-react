@@ -47,7 +47,7 @@ export default class Routes extends React.Component<Props,State> {
                 <Container maxWidth={"sm"} >
                     <Switch>
                         {routesToShow}
-                        <Redirect from="*" to={"/"} />
+                        {/*<Redirect from="*" to={"/"} />*/}
                     </Switch>
                 </Container>
             </>
