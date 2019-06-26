@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter} from "react-router-dom";
 import Routes from "./components/routes";
 import Authenticator from "./components/Shared/Authenticator";
-import Actions from "./components/Pages/ActionsSideBar/Actions";
+import Actions from "./components/Pages/Actions/Actions";
 import {ThemeProvider} from '@material-ui/styles';
 import createMuiTheme, {ThemeOptions} from "@material-ui/core/styles/createMuiTheme";
 import {purple, blueGrey} from '@material-ui/core/colors';
