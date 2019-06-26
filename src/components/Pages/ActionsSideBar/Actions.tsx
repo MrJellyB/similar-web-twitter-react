@@ -1,9 +1,10 @@
 import React from "react";
 import IUser from "../../../models/IUser";
-import {Link} from "react-router-dom";
 import {AuthContext} from "../../Shared/Authenticator";
 import IconsSideBar from "../IconsSideBar/IconsSideBar";
 import IconNavAction from "../IconNavAction/IconNavAction";
+import Login from "../Login";
+import Register from "../Register/Register";
 
 interface IState {
     currentUser?: IUser
@@ -32,8 +33,12 @@ export default class Actions extends React.Component<IProps,IState> {
         else {
             actionsToShow = (
                 <>
-                    <IconNavAction icon={"person"} path={"/register"} title={"Register"} />
-                    <IconNavAction icon={"arrow_forward"} path={"/login"} title={"Login"} />
+                    <IconNavAction icon={"person"} title={"Register"}  >
+                        <Register/>
+                    </IconNavAction>
+                    <IconNavAction icon={"arrow_forward"} title={"Login"} >
+                        <Login />
+                    </IconNavAction>
                 </>
             );
         }

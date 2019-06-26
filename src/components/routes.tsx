@@ -1,14 +1,12 @@
 import React from "react";
 import IUser from "../models/IUser";
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Home from "./Pages/Home";
-import Register from "./Pages/Register";
+import Register from "./Pages/Register/Register";
 import {AuthContext} from "./Shared/Authenticator";
 import LogOut from "./Pages/LogOut";
-import Actions from "./Pages/ActionsSideBar/Actions";
 import Login from "./Pages/Login";
 import {Container} from "@material-ui/core";
-import IconsSideBar from "./Pages/IconsSideBar/IconsSideBar";
 
 interface Props {
     currentUser?: IUser

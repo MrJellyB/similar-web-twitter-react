@@ -2,18 +2,16 @@
   top: 40%;
   display: flex;
   text-align: left;
-  width: auto;
   overflow: hidden;
   position: absolute;
   color: white;
-  transition: max-width 500ms;
-  max-width: 2em;
+  transition: width 500ms;
+  width: 2em;
 }
 
 .navBar:hover {
   @extend .navBar;
 
-  width: content-box;
-  max-width: 15em;
-  transition: max-width 500ms;
+  width: 10em;
+  transition: width 500ms;
 }
