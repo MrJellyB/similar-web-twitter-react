@@ -5,9 +5,10 @@ import Home from "./Pages/Home";
 import Register from "./Pages/Register";
 import {AuthContext} from "./Shared/Authenticator";
 import LogOut from "./Pages/LogOut";
-import ActionsSideBar from "./Pages/ActionsSideBar/ActionsSideBar";
+import Actions from "./Pages/ActionsSideBar/Actions";
 import Login from "./Pages/Login";
 import {Container} from "@material-ui/core";
+import IconsSideBar from "./Pages/IconsSideBar/IconsSideBar";
 
 interface Props {
     currentUser?: IUser
@@ -43,7 +44,6 @@ export default class Routes extends React.Component<Props,State> {
 
         return (
             <>
-                <ActionsSideBar />
                 <Container maxWidth={"sm"} >
                     <Switch>
                         {routesToShow}
