@@ -13,7 +13,7 @@ export default class IconsSideBar extends React.Component<IProps,IState> {
     render() {
         return (
             <div className={styles.navBar}>
-                <Box color={"primary.main"} >
+                <Box color={"primary"} >
                     {this.props.children}
                 </Box>
             </div>

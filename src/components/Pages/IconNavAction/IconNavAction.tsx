@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import styles from './IconNavAction.module.scss';
 import {Icon,Button} from "@material-ui/core";
 import {Link} from "react-router-dom";
@@ -11,10 +12,26 @@ interface IProps {
 }
 
 interface IState {
-    
+    elementForPopper: any;
+    isOpen:boolean;
 }
 
 export default class IconNavAction extends React.Component<IProps,IState>{
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+            elementForPopper: document.getElementById('root'),
+            isOpen: false
+        };
+    }
+
+    handleClick = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
+    };
 
     render() {
         if(this.props.path != null) {
@@ -33,21 +50,22 @@ export default class IconNavAction extends React.Component<IProps,IState>{
                 <Manager>
                     <Reference>
                         {({ref}) => (
-                            <Button href={undefined} className={styles.navButton} ref={ref}>
+                            <Button href={undefined} className={styles.navButton} ref={ref} onClick={this.handleClick}>
                                 <Icon className={styles.icon}>{this.props.icon}</Icon>
                                 {this.props.title}
                             </Button>
                         )}
                     </Reference>
-
-                    <Popper placement="right">
-                        {({ ref, style, placement, arrowProps }) => (
-                            <div ref={ref} style={style} data-placement={placement}>
-                                Popper element
-                                <div ref={arrowProps.ref} style={arrowProps.style} />
-                            </div>
-                        )}
-                    </Popper>
+                    {this.state.isOpen && ReactDOM.createPortal((
+                        <Popper placement="right" positionFixed={true}>
+                            {({ref, style, placement}) => (
+                                <div ref={ref} style={style} data-placement={placement} className={styles.bubblePopper}>
+                                    {this.props.children}
+                                </div>
+                            )}
+                        </Popper>),
+                        this.state.elementForPopper)
+                    }
                 </Manager>
             )
         }
