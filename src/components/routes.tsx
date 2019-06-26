@@ -2,10 +2,7 @@ import React from "react";
 import IUser from "../models/IUser";
 import {Route, Switch} from 'react-router-dom';
 import Home from "./Pages/Home";
-import Register from "./Pages/Register/Register";
 import {AuthContext} from "./Shared/Authenticator";
-import LogOut from "./Pages/LogOut";
-import Login from "./Pages/Login";
 import {Container} from "@material-ui/core";
 
 interface Props {
@@ -26,15 +23,12 @@ export default class Routes extends React.Component<Props,State> {
             routesToShow = (
                 <>
                     <Route path="/" exact component={Home}/>
-                    <Route path="/logout" exact component={LogOut} />
                 </>
             );
         }
         else {
             routesToShow = (
                 <>
-                    <Route path="/register" component={Register} />
-                    <Route path="/login" component={Login} />
                     <Route path="/" component={Home}/>
                 </>
             )

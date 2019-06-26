@@ -5,7 +5,7 @@ import notificationEventStore from "../../../events/notificationEventStore";
 import usersEventStore from "../../../events/usersEventStore";
 import {Redirect} from "react-router";
 import appConfig from "../../../utils/appConfig";
-import {Button, FormControl, Icon, Input, InputLabel} from "@material-ui/core";
+import {Button, FormControl, Icon, Input, Typography} from "@material-ui/core";
 import styles from './Register.module.scss';
 
 interface IProps {
@@ -80,7 +80,9 @@ export default class Register extends React.Component<IProps, IState> {
     render () {
         return (
             <div className={styles.registerForm}>
-                <h1>Register</h1>
+                <Typography variant="h6" gutterBottom>
+                    Register
+                </Typography>
 
                 <form onSubmit={this.handleSubmit}>
                     <FormControl>
@@ -111,8 +113,7 @@ export default class Register extends React.Component<IProps, IState> {
                             placeholder="Nickname..."
                             onChange={this.handleInputChange}/>
                     </FormControl>
-                    <FormControl className={styles.passwordInput}>
-                        <InputLabel htmlFor="adornment-password">Password</InputLabel>
+                    <FormControl>
                         <Input
                             name="password"
                             type="password"

@@ -1,11 +1,13 @@
 import React from "react";
-import authApiGateway from "../../utils/authApiGateway";
-import notificationEventStore from "../../events/notificationEventStore";
-import usersEventStore from "../../events/usersEventStore";
+import authApiGateway from "../../../utils/authApiGateway";
+import notificationEventStore from "../../../events/notificationEventStore";
+import usersEventStore from "../../../events/usersEventStore";
 import {Redirect} from "react-router";
-import appConfig from "../../utils/appConfig";
-import ILoginData from "../../models/loginData";
-import {ILoggedInUser} from "../../models/ILoggedInUser";
+import appConfig from "../../../utils/appConfig";
+import ILoginData from "../../../models/loginData";
+import {ILoggedInUser} from "../../../models/ILoggedInUser";
+import {Button, FormControl, Icon, Input, Typography} from "@material-ui/core";
+import styles from "../Register/Register.module.scss";
 
 interface IProps {
 }
@@ -27,7 +29,7 @@ export default class Login extends React.Component<IProps, IState> {
         };
     }
 
-    handleInputChange= (event: React.FormEvent<HTMLInputElement>) => {
+    handleInputChange= (event: React.FormEvent<HTMLInputElement|HTMLTextAreaElement>) => {
         const target = event.currentTarget;
         const userFromInput = {
             ...this.state.user,
@@ -76,21 +78,29 @@ export default class Login extends React.Component<IProps, IState> {
     render () {
         return (
             <div className={""}>
-                <h1>Login</h1>
+                <Typography variant="h6" gutterBottom>
+                    Login
+                </Typography>
 
                 <form onSubmit={this.handleSubmit}>
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Enter User Email..."
-                        onChange={this.handleInputChange} />
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="Enter Password..."
-                        onChange={this.handleInputChange} />
+                    <FormControl>
+                        <Input
+                            name="email"
+                            type="email"
+                            placeholder="User Email..."
+                            onChange={this.handleInputChange}/>
+                    </FormControl>
+                    <FormControl>
+                        <Input
+                            name="password"
+                            type="password"
+                            placeholder="Enter Password..."
+                            onChange={this.handleInputChange}/>
+                    </FormControl>
 
-                    <input type="submit" value="submit"/>
+                    <Button type="submit" value="submit" className={styles.submitButton}>
+                        <Icon>send</Icon>
+                    </Button>
                 </form>
             </div>
         )

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styles from './IconNavAction.module.scss';
-import {Icon,Button} from "@material-ui/core";
+import {Icon, Button, Box} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Manager, Reference, Popper} from "react-popper";
 
@@ -34,6 +34,7 @@ export default class IconNavAction extends React.Component<IProps,IState>{
     };
 
     render() {
+
         if(this.props.path != null) {
 
             return (
@@ -58,9 +59,12 @@ export default class IconNavAction extends React.Component<IProps,IState>{
                     </Reference>
                     {this.state.isOpen && ReactDOM.createPortal((
                         <Popper placement="right" positionFixed={true}>
-                            {({ref, style, placement}) => (
-                                <div ref={ref} style={style} data-placement={placement} className={styles.bubblePopper}>
-                                    {this.props.children}
+                            {({ref, style, placement, arrowProps}) => (
+                                <div ref={ref} style={style} data-placement={placement}>
+                                    <Box color="primary" bgcolor="secondary" component="div" p={2} className={styles.popperContainer}>
+                                        {this.props.children}
+                                        <div ref={arrowProps.ref} style={arrowProps.style} />
+                                    </Box>
                                 </div>
                             )}
                         </Popper>),

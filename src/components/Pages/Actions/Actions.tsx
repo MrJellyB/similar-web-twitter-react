@@ -3,7 +3,7 @@ import IUser from "../../../models/IUser";
 import {AuthContext} from "../../Shared/Authenticator";
 import IconsSideBar from "../IconsSideBar/IconsSideBar";
 import IconNavAction from "../IconNavAction/IconNavAction";
-import Login from "../Login";
+import Login from "../Login/Login";
 import Register from "../Register/Register";
 
 interface IState {
