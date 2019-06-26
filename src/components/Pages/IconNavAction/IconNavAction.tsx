@@ -61,7 +61,7 @@ export default class IconNavAction extends React.Component<IProps,IState>{
                         <Popper placement="right" positionFixed={true}>
                             {({ref, style, placement, arrowProps}) => (
                                 <div ref={ref} style={style} data-placement={placement}>
-                                    <Box color="primary" bgcolor="secondary" component="div" p={2} className={styles.popperContainer}>
+                                    <Box color="primary.color" bgcolor="secondary.color" component="div" p={2} className={styles.popperContainer}>
                                         {this.props.children}
                                         <div ref={arrowProps.ref} style={arrowProps.style} />
                                     </Box>

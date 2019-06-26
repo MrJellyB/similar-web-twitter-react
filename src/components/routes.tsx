@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import Home from "./Pages/Home";
 import {AuthContext} from "./Shared/Authenticator";
 import {Container} from "@material-ui/core";
+import LogOut from "./Pages/LogOut";
 
 interface Props {
     currentUser?: IUser
@@ -23,6 +24,7 @@ export default class Routes extends React.Component<Props,State> {
             routesToShow = (
                 <>
                     <Route path="/" exact component={Home}/>
+                    <Route path="/logout" exact component={LogOut}/>
                 </>
             );
         }
