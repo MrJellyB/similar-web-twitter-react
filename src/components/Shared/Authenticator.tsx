@@ -1,7 +1,6 @@
 import React from "react";
 import IUser from "../../models/IUser";
 import usersEventStore from "../../events/usersEventStore";
-import ILoggedInUserContext from "../../models/LoggedInUserContext";
 import AppConfig from "../../utils/appConfig";
 import authApiGateway from "../../utils/authApiGateway";
 
@@ -13,7 +12,7 @@ interface IProps {
     children: any
 }
 
-export const AuthContext = React.createContext<null|ILoggedInUserContext>(null);
+export const AuthContext = React.createContext<null|IUser>(null);
 
 export default class Authenticator extends React.Component<IProps, IState>{
 
@@ -32,18 +31,20 @@ export default class Authenticator extends React.Component<IProps, IState>{
 
         if (currentUser == null && (userTokenFromStorage != null && userIdFromStorage != null))
             authApiGateway.getCurrentUserInfo(userIdFromStorage)
-                .then(usersEventStore.currentUserEvent.next);
+                .then((user: IUser) => {
+                    usersEventStore.currentUserEvent.next(user);
+                });
     }
 
     handleUserChange = (user: IUser|null): void => {
-        if(user != null)
+        // if(user != null)
             this.setState({
                 currentUser: user
             });
     };
 
     render() {
-        return (<AuthContext.Provider value={ { loggedInUser : this.state.currentUser } as ILoggedInUserContext}>
+        return (<AuthContext.Provider value={ this.state.currentUser as IUser}>
             {this.props.children}
         </AuthContext.Provider>);
     }

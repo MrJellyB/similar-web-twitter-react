@@ -1,5 +1,4 @@
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
-import tokenProvider from 'axios-token-interceptor';
 import AppConfig from './appConfig';
 import usersEventStore from "../events/usersEventStore";
 
@@ -12,15 +11,17 @@ class ApiGateway {
 
     constructor() {
 
-        this.axiosClient.interceptors.request.use(tokenProvider({
-            getToken: () => {
-                const tokenStorageValue = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY) as string;
+        this.axiosClient.interceptors.request.use(
+            (request) => {
+                const userToken = localStorage.getItem(AppConfig.TOKEN_STORAGE_KEY);
 
-                console.log(tokenStorageValue);
-                return tokenStorageValue || "";
-            },
-            header: this.TOKEN_HEADER
-        }));
+                if (userToken != null) {
+                    request.headers[this.TOKEN_HEADER] = userToken;
+                }
+
+                return request;
+            }
+        );
 
 
         // TODO: Maybe we need userid?
@@ -45,8 +46,9 @@ class ApiGateway {
                 const userToken = response.headers[this.TOKEN_HEADER] as string;
 
                 if (userToken != null) {
-                    const tokenToStore = userToken.substring("Bearer ".length);
-                    localStorage.setItem(AppConfig.TOKEN_STORAGE_KEY, tokenToStore);
+                    // const tokenToStore = userToken.substring("Bearer ".length);
+                    localStorage.removeItem(AppConfig.TOKEN_STORAGE_KEY);
+                    localStorage.setItem(AppConfig.TOKEN_STORAGE_KEY, userToken);
                 }
 
                 return response;

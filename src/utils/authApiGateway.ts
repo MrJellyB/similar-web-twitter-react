@@ -1,7 +1,8 @@
 import ApiGateway from './apiGateway';
 import ISignInData from "../models/signInData";
-import IUserSessionInfo from "../models/token";
 import IUser from "../models/IUser";
+import ILoginData from "../models/loginData";
+import {ILoggedInUser} from "../models/ILoggedInUser";
 
 class AuthApiGateway {
 
@@ -9,12 +10,16 @@ class AuthApiGateway {
         return await ApiGateway.makeRequest<string, IUser, null>('auth', 'auth/register', "POST", user);
     }
 
-    public async logIn(email: string, password: string): Promise<IUserSessionInfo> {
-        return { userToken: "bla", userId: "bla" };
+    public async logIn(loginData: ILoginData): Promise<ILoggedInUser> {
+        return await ApiGateway.makeRequest<ILoggedInUser, ILoginData, null>(
+            'auth',
+            'auth/login',
+            "POST",
+            loginData);
     }
 
     public async logOut(): Promise<void> {
-
+        return await ApiGateway.makeRequest('auth', 'auth/logout', "GET");
     }
 
     public async getCurrentUserInfo(userId: string): Promise<IUser>{
