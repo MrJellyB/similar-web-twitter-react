@@ -54,7 +54,8 @@ export default class Register extends React.Component<IProps, IState> {
     };
 
     validateSubmit = (userToValidate: ISignInData) : boolean => {
-        return  Object.values(userToValidate).every(key => key !== "");
+        return true
+
     };
 
     submitUser = async (userToSubmit: ISignInData) : Promise<void> => {
@@ -90,35 +91,40 @@ export default class Register extends React.Component<IProps, IState> {
                         name="email"
                         type="email"
                         placeholder="User Email..."
-                        onChange={this.handleInputChange}/>
+                        onChange={this.handleInputChange}
+                        required={true}/>
                     </FormControl>
                     <FormControl>
                         <Input
                         name="firstName"
                         type="text"
                         placeholder="First Name..."
-                        onChange={this.handleInputChange}/>
+                        onChange={this.handleInputChange}
+                        required={true}/>
                     </FormControl>
                     <FormControl>
                         <Input
                         name="lastName"
                         type="text"
                         placeholder="Last Name..."
-                        onChange={this.handleInputChange}/>
+                        onChange={this.handleInputChange}
+                        required={true}/>
                     </FormControl>
                     <FormControl>
                         <Input
                             name="nickName"
                             type="text"
                             placeholder="Nickname..."
-                            onChange={this.handleInputChange}/>
+                            onChange={this.handleInputChange}
+                        required={true}/>
                     </FormControl>
                     <FormControl>
                         <Input
                             name="password"
                             type="password"
                             placeholder="Enter Password..."
-                            onChange={this.handleInputChange}/>
+                            onChange={this.handleInputChange}
+                            required={true}/>
                     </FormControl>
 
                     <Button type="submit" value="submit" className={styles.submitButton}>
