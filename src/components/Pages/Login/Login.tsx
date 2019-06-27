@@ -88,14 +88,16 @@ export default class Login extends React.Component<IProps, IState> {
                             name="email"
                             type="email"
                             placeholder="User Email..."
-                            onChange={this.handleInputChange}/>
+                            onChange={this.handleInputChange}
+                            required={true}/>
                     </FormControl>
                     <FormControl>
                         <Input
                             name="password"
                             type="password"
                             placeholder="Enter Password..."
-                            onChange={this.handleInputChange}/>
+                            onChange={this.handleInputChange}
+                            required={true}/>
                     </FormControl>
 
                     <Button type="submit" value="submit" className={styles.submitButton}>
