@@ -1,5 +1,6 @@
 import ApiGateway from './apiGateway';
 import IFeedCreationRequest from "../models/IFeedCreationRequest";
+import IPostData from "../models/IPostData";
 
 class PostsApiGateway {
     public async createFeedForUser(userId: string): Promise<void> {
@@ -10,7 +11,7 @@ class PostsApiGateway {
             { RelatedToUser: userId } as IFeedCreationRequest);
     }
 
-    public async sendPostOfUser(userId: string) : Promise<void> {
+    public async sendPostOfUser(post: IPostData) : Promise<void> {
 
     }
 }

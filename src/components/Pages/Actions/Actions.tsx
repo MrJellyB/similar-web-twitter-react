@@ -5,6 +5,8 @@ import IconsSideBar from "../IconsSideBar/IconsSideBar";
 import IconNavAction from "../IconNavAction/IconNavAction";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import SendPostForm from "../Post/SendPostForm";
+import {ILoggedInUser} from "../../../models/ILoggedInUser";
 
 interface IState {
     currentUser?: IUser
@@ -19,12 +21,14 @@ export default class Actions extends React.Component<IProps,IState> {
 
     render() {
         console.log(this.context);
-        const loggedInUser = this.context as IUser;
+        const loggedInUser = this.context as ILoggedInUser;
         let actionsToShow;
         
         if(loggedInUser != null) {
             actionsToShow = ( <>
-                <IconNavAction icon={"send"} path={"post"} title={"post"} />
+                <IconNavAction icon={"send"} title={"post"} >
+                    <SendPostForm userId={loggedInUser.uid} />
+                </IconNavAction>
                 <IconNavAction icon={"list"} path={"/personal-feed"} title={"My Feed"}/>
                 <IconNavAction icon={"public"} path={"/global-feed"} title={"Everyone's Feed"}/>
                 <IconNavAction icon={"exit_to_app"} path={"/logout"} title={"Logout"} />

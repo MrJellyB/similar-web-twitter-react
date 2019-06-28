@@ -3,4 +3,5 @@ export default interface IUser {
     firstName?: string;
     lastName?: string;
     nickName?: string;
+    userId: string;
 }

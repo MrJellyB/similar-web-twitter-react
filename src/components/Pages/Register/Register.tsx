@@ -60,8 +60,8 @@ export default class Register extends React.Component<IProps, IState> {
     };
 
     submitUser = async (userToSubmit: ISignInData) : Promise<void> => {
-        authApiGateway.register(userToSubmit)
-            .then(async (userId:string) => {
+            try {
+                const userId = await authApiGateway.register(userToSubmit);
 
                 await postsApiGateway.createFeedForUser(userId);
 
@@ -69,11 +69,15 @@ export default class Register extends React.Component<IProps, IState> {
                 usersEventStore.currentUserEvent.next(userToSubmit);
                 localStorage.setItem(appConfig.USERID_STORAGE_KEY, userId);
                 this.renderRedirect();
-            })
-            .catch((error) => {
+            }
+            catch(error) {
                 console.log("failure" + error);
                 // TODO: use redux or rxjs to notify failure to the user
-            })
+            }
+            // .catch((error) => {
+            //     console.log("failure" + error);
+            //     // TODO: use redux or rxjs to notify failure to the user
+            // })
 
     };
 
@@ -89,7 +93,7 @@ export default class Register extends React.Component<IProps, IState> {
                 </Typography>
 
                 <form onSubmit={this.handleSubmit}>
-                    <FormControl>
+                    <FormControl component={"div"}>
                         <Input
                         name="email"
                         type="email"
@@ -97,7 +101,7 @@ export default class Register extends React.Component<IProps, IState> {
                         onChange={this.handleInputChange}
                         required={true}/>
                     </FormControl>
-                    <FormControl>
+                    <FormControl component={"div"}>
                         <Input
                         name="firstName"
                         type="text"
@@ -105,7 +109,7 @@ export default class Register extends React.Component<IProps, IState> {
                         onChange={this.handleInputChange}
                         required={true}/>
                     </FormControl>
-                    <FormControl>
+                    <FormControl component={"div"}>
                         <Input
                         name="lastName"
                         type="text"
@@ -113,7 +117,7 @@ export default class Register extends React.Component<IProps, IState> {
                         onChange={this.handleInputChange}
                         required={true}/>
                     </FormControl>
-                    <FormControl>
+                    <FormControl component={"div"}>
                         <Input
                             name="nickName"
                             type="text"
@@ -121,7 +125,7 @@ export default class Register extends React.Component<IProps, IState> {
                             onChange={this.handleInputChange}
                         required={true}/>
                     </FormControl>
-                    <FormControl>
+                    <FormControl component={"div"}>
                         <Input
                             name="password"
                             type="password"
