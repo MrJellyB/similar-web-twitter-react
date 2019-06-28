@@ -1,6 +1,7 @@
 import React from "react";
 import ISignInData from "../../../models/signInData";
 import authApiGateway from "../../../utils/authApiGateway";
+import postsApiGateway from "../../../utils/postsApiGateway";
 import notificationEventStore from "../../../events/notificationEventStore";
 import usersEventStore from "../../../events/usersEventStore";
 import {Redirect} from "react-router";
@@ -60,8 +61,10 @@ export default class Register extends React.Component<IProps, IState> {
 
     submitUser = async (userToSubmit: ISignInData) : Promise<void> => {
         authApiGateway.register(userToSubmit)
-            .then((userId:string) => {
-                console.log("success");
+            .then(async (userId:string) => {
+
+                await postsApiGateway.createFeedForUser(userId);
+
                 notificationEventStore.notifySuccess.next("User Registered Successfully");
                 usersEventStore.currentUserEvent.next(userToSubmit);
                 localStorage.setItem(appConfig.USERID_STORAGE_KEY, userId);

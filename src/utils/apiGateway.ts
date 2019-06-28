@@ -3,6 +3,13 @@ import AppConfig from './appConfig';
 import usersEventStore from "../events/usersEventStore";
 
 class ApiGateway {
+    private readonly DEFAULT_HEADERS = {
+        "Content-Type": "application/json",
+        "put": {
+            "Content-Type": "application/json"
+        }
+    };
+
     private readonly axiosClient: AxiosInstance = axios.create({
         baseURL: AppConfig.BASE_URL
     });
@@ -62,13 +69,14 @@ class ApiGateway {
         localStorage.removeItem(AppConfig.TOKEN_STORAGE_KEY);
     };
 
-    public async makeRequest<R, B, P>(service: string, path: string, method:'GET'|'POST', requestData?: B, requestParams?: P): Promise<R>{
+    public async makeRequest<R, B, P>(service: string, path: string, method:'GET'|'POST'|'PUT', requestData?: B, requestParams?: P): Promise<R>{
         console.log(AppConfig.MICROSERVICES_TO_URLS);
         const {data} = await this.axiosClient({
             baseURL: AppConfig.MICROSERVICES_TO_URLS[service].url + "/" + path,
             method: method,
             data: requestData,
-            params: requestParams
+            params: requestParams,
+            headers: this.DEFAULT_HEADERS
         }) as AxiosResponse<R>;
 
         return data;
