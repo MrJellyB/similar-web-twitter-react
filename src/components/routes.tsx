@@ -1,6 +1,6 @@
 import React from "react";
 import IUser from "../models/IUser";
-import {Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import Home from "./Pages/Home";
 import {AuthContext} from "./Shared/Authenticator";
 import {Container} from "@material-ui/core";
@@ -23,8 +23,9 @@ export default class Routes extends React.Component<Props,State> {
         if(loggedInUser != null) {
             routesToShow = (
                 <>
-                    <Route path="/" exact component={Home}/>
+                    <Route path="/feed/global" exact component={Home}/>
                     <Route path="/logout" exact component={LogOut}/>
+                    <Redirect from={"*"} to={"/feed/global"} />
                 </>
             );
         }

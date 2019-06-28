@@ -3,6 +3,8 @@ import IPostData from "../../../models/IPostData";
 import {Typography, FormControl, Input, Button, Icon} from "@material-ui/core";
 import postApiGateway from "../../../utils/postsApiGateway";
 import {Redirect} from "react-router";
+import postsEventsStore from "../../../events/postsEventsStore";
+import IPost from "../../../models/IPost";
 
 interface IProps {
     userId: string
@@ -50,6 +52,11 @@ export default class SendPostForm extends React.Component<IProps, IState> {
     onSubmit = async (post: IPostData) => {
         try {
             await postApiGateway.sendPostOfUser(post);
+            const postToStoreLocally:IPost = post as IPost;
+            postToStoreLocally.isLiked = false;
+            postToStoreLocally.numberOfLikes = 0;
+
+            postsEventsStore.onPostSubmitted.next(postToStoreLocally);
             this.onRedirect();
         }
         catch(error) {
@@ -64,10 +71,10 @@ export default class SendPostForm extends React.Component<IProps, IState> {
     };
 
     validateSubmit = (postData: IPostData) : boolean => {
-        const validValueRegex = /[A-z0-9].*/g;
 
         return Object.values(postData).every((fieldValue:string) => {
-            return validValueRegex.test(fieldValue);
+            const validValueRegex = /['"\\]/g;
+            return !validValueRegex.test(fieldValue);
         });
     };
 
