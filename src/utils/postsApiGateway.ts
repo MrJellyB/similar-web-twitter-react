@@ -12,7 +12,12 @@ class PostsApiGateway {
     }
 
     public async sendPostOfUser(post: IPostData) : Promise<void> {
-
+        await ApiGateway.makeRequest<null, IPostData, null>(
+            'posts',
+            'api/posts',
+            'PUT',
+            post
+        )
     }
 }
 
