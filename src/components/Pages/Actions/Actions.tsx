@@ -27,10 +27,10 @@ export default class Actions extends React.Component<IProps,IState> {
         if(loggedInUser != null) {
             actionsToShow = ( <>
                 <IconNavAction icon={"send"} title={"post"} >
-                    <SendPostForm userId={loggedInUser.uid} />
+                    <SendPostForm userId={loggedInUser.userId} />
                 </IconNavAction>
-                <IconNavAction icon={"list"} path={"/personal/feed"} title={"My Feed"}/>
-                <IconNavAction icon={"public"} path={"/global/feed"} title={"Global Feed"}/>
+                <IconNavAction icon={"list"} path={"/feed/personal"} title={"My Feed"}/>
+                <IconNavAction icon={"public"} path={"/feed/global"} title={"Global Feed"}/>
                 <IconNavAction icon={"exit_to_app"} path={"/logout"} title={"Logout"} />
             </>);
         }

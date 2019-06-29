@@ -5,7 +5,7 @@ $border: 2px solid #480048;
   display: flex;
   text-align: left;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   color: white;
   transition: width 500ms;
   width: 2em;

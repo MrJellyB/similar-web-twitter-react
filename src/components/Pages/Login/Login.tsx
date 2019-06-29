@@ -61,7 +61,7 @@ export default class Login extends React.Component<IProps, IState> {
                 console.log("success");
                 notificationEventStore.notifySuccess.next("Login Successful");
                 usersEventStore.currentUserEvent.next(loggedInUser);
-                localStorage.setItem(appConfig.USERID_STORAGE_KEY, loggedInUser.uid);
+                localStorage.setItem(appConfig.USERID_STORAGE_KEY, loggedInUser.userId);
                 this.renderRedirect();
             })
             .catch((error) => {
