@@ -1,5 +1,8 @@
+import IUser from "./IUser";
+import IPost from "./IPost";
+
 export default interface IPostData {
     title: string;
     body: string;
-    userId: string;
+    owner: IUser;
 }

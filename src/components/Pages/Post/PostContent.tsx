@@ -13,17 +13,21 @@ interface IState {
 
 export default class PostContent extends React.Component<IProps,IState> {
 
+    getAuthorInitials(displayName: string): string {
+        return displayName.split(' ').map(w => w.toUpperCase()[0]).join('');
+    }
+
     render() {
         return (
             <Card>
                 <CardHeader
                     title={this.props.post.title}
-                    // avatar={
-                    //     {/*TODO:We need to get user details back from posts service*/}
-                    //     {/*<Avatar>*/}
-                    //     {/*    {this.props.post.}*/}
-                    //     {/*</Avatar>*/}
-                    // }
+                    avatar={
+                        <Avatar>
+                            {this.props.post.author.displayName != null ?
+                                this.getAuthorInitials(this.props.post.author.displayName) : ""}
+                        </Avatar>
+                    }
                 />
                 <CardContent>
                     {this.props.post.body}

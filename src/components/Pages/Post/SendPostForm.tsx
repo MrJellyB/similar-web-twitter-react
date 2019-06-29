@@ -5,6 +5,10 @@ import postApiGateway from "../../../utils/postsApiGateway";
 import {Redirect} from "react-router";
 import postsEventsStore from "../../../events/postsEventsStore";
 import IPost from "../../../models/IPost";
+import usersEventStore from "../../../events/usersEventStore";
+import IUser from "../../../models/IUser";
+import {IPostRequest} from "../../../models/IPostRequest";
+import {ILoggedInUser} from "../../../models/ILoggedInUser";
 
 interface IProps {
     userId: string
@@ -22,7 +26,7 @@ export default class SendPostForm extends React.Component<IProps, IState> {
             post: {
                 title: "",
                 body: "",
-                userId: this.props.userId
+                owner: {  userId: this.props.userId } as IUser
             }
         }
     }
@@ -51,10 +55,15 @@ export default class SendPostForm extends React.Component<IProps, IState> {
 
     onSubmit = async (post: IPostData) => {
         try {
-            await postApiGateway.sendPostOfUser(post);
+            const currentUser = usersEventStore.currentUserEvent.value as IUser;
+            const postToSend = {...post, ownerId: currentUser.userId} as IPostRequest;
+
+            await postApiGateway.sendPostOfUser(postToSend);
             const postToStoreLocally:IPost = post as IPost;
             postToStoreLocally.isLiked = false;
             postToStoreLocally.numberOfLikes = 0;
+            postToStoreLocally.owner = currentUser;
+            postToStoreLocally.author = currentUser;
 
             postsEventsStore.onPostSubmitted.next(postToStoreLocally);
             this.onRedirect();

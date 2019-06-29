@@ -29,8 +29,8 @@ export default class Actions extends React.Component<IProps,IState> {
                 <IconNavAction icon={"send"} title={"post"} >
                     <SendPostForm userId={loggedInUser.uid} />
                 </IconNavAction>
-                <IconNavAction icon={"list"} path={"/personal-feed"} title={"My Feed"}/>
-                <IconNavAction icon={"public"} path={"/global-feed"} title={"Everyone's Feed"}/>
+                <IconNavAction icon={"list"} path={"/personal/feed"} title={"My Feed"}/>
+                <IconNavAction icon={"public"} path={"/global/feed"} title={"Global Feed"}/>
                 <IconNavAction icon={"exit_to_app"} path={"/logout"} title={"Logout"} />
             </>);
         }
